@@ -12,6 +12,11 @@ import {
 } from "react-router-dom";
 import Index from "./routes/index";
 import TestPage from "./routes/test";
+import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
+
+// https://github.com/suren-atoyan/monaco-react/issues/482
+// https://github.com/microsoft/monaco-editor/issues/4778
+loader.config({ paths: { vs: window.location.origin + '/monaco-editor@0.52.2/vs' } });
 
 const router = createBrowserRouter([
   {
@@ -47,8 +52,20 @@ const router = createBrowserRouter([
   },
 ]);
 
+function Root1() {
+  return <Editor height="500px" defaultLanguage="javascript" defaultValue="// some comment" />;
+}
+
+const router1 = createBrowserRouter([
+  {
+    path: "/",
+    element: <Root1 />,
+  },
+]);
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <RouterProvider router={router1} />
+    {/* <RouterProvider router={router} /> */}
   </StrictMode>,
 )
